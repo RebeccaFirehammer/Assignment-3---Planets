@@ -1,4 +1,4 @@
-package model;
+package planet.detail;
 
 import javafx.scene.image.Image;
 
@@ -21,7 +21,13 @@ public class Planet {
     private double planetMeanSurfaceTempC;
     private int planetNumberOfMoons;
     
-    public Planet() {
+    public Planet(String planetName, double planetDiameterKM, double planetMeanSurfaceTempC,
+    				int planetNumberOfMoons, Image planetImage) {
+    	this.planetName = planetName;
+    	this.planetDiameterKM = planetDiameterKM;
+    	this.planetMeanSurfaceTempC = planetMeanSurfaceTempC;
+    	this.planetNumberOfMoons = planetNumberOfMoons;
+    	this.planetImage = planetImage;
     	
     }
     
@@ -60,6 +66,10 @@ public class Planet {
     	}
     }
     
+    public void setPlanetImage(Image planetImage){
+    	this.planetImage = planetImage;
+    }
+    
     public void setPlanetDiameterKM(double planetDiameterKM) {
     	if(isValidDiameter(planetDiameterKM)) {
     		this.planetDiameterKM = planetDiameterKM;
@@ -83,6 +93,10 @@ public class Planet {
     public String getPlanetName() {
 		return planetName;
 	}
+    
+    public Image getPlanetImage(){
+    	return planetImage;
+    }
 
 	public double getPlanetDiameterKM() {
 		return planetDiameterKM;
