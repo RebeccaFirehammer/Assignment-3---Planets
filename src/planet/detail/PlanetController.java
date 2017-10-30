@@ -1,5 +1,7 @@
 package planet.detail;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,7 +44,12 @@ public class PlanetController {
     }
     @FXML    
     void loadPlanet(ActionEvent event) {   
-
+    	try {
+    		Runtime.getRuntime().exec("explorer.exe /select, path");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }       
 
     @FXML    
