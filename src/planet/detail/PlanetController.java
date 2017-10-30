@@ -40,5 +40,14 @@ public class PlanetController {
     void selectImage(ActionEvent event) {
 
     }
+    @FXML    
+    void loadPlanet(ActionEvent event) {   
+
+    }       
+
+    @FXML    
+    void savePlanet(ActionEvent event) {   
+
+    }
 
 }
