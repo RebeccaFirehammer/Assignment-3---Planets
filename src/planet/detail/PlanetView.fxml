@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="BOTTOM_CENTER">
@@ -19,7 +18,9 @@
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <ImageView fx:id="planetImage" fitHeight="280.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true">
-                  </ImageView>
+                     <image>
+
+                     </image></ImageView>
                   <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Select Image" />
                </children>
             </VBox>
@@ -99,8 +100,8 @@
    <bottom>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Loan Planet from File" />
-            <Button mnemonicParsing="false" text="Save Planet to File" />
+            <Button mnemonicParsing="false" text="Load Planet from File" onAction="#loadPlanet" />
+            <Button mnemonicParsing="false" text="Save Planet to File" onAction="#savePlanet" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" top="20.0" />
@@ -108,7 +109,7 @@
       </HBox>
    </bottom>
    <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="fancyPlanetName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" text="">
                <font>
