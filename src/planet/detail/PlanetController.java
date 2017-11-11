@@ -8,8 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
 public class PlanetController {
+    FileChooser chooser = new FileChooser();
 
     @FXML
     private ImageView planetImage;
@@ -40,21 +42,20 @@ public class PlanetController {
 
     @FXML
     void selectImage(ActionEvent event) {
-
+        chooser.setTitle("Select Image");
+        chooser.showOpenDialog(selectImageButton.getScene().getWindow());
     }
+    
     @FXML    
     void loadPlanet(ActionEvent event) {   
-    	try {
-    		Runtime.getRuntime().exec("explorer.exe /select, path");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }       
+        chooser.setTitle("Select Planet to Load");
+        chooser.showOpenDialog(selectImageButton.getScene().getWindow());
+    }
 
     @FXML    
     void savePlanet(ActionEvent event) {   
-
+        chooser.setTitle("Select Location to Save Planet");
+        chooser.showSaveDialog(selectImageButton.getScene().getWindow());
     }
 
 }
