@@ -2,10 +2,10 @@ package planet.detail;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -20,6 +20,8 @@ import javafx.stage.FileChooser;
 public class PlanetController {
     FileChooser chooser = new FileChooser();
     
+    FileWriter writer;
+    
     Planet planet;
     
 	private final double MILES_IN_KM = 0.621371;
@@ -28,7 +30,7 @@ public class PlanetController {
     private ImageView planetImage;
 
     @FXML
-    private Button selectImageButton;
+    private Button selectImageButton; 
 
     @FXML
     private TextField planetName;
@@ -116,7 +118,7 @@ public class PlanetController {
     void setImageFilter(){
         FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
         FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-        chooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+        chooser.getExtensionFilters().setAll(extFilterJPG, extFilterPNG);
     }
     
     @FXML    
@@ -128,8 +130,32 @@ public class PlanetController {
     @FXML    
     void savePlanet(ActionEvent event) {   
     	setPlanetValues();
+    	setSaveFilter(); 
         chooser.setTitle("Select Location to Save Planet");
-        chooser.showSaveDialog(selectImageButton.getScene().getWindow());
+        File file = chooser.showSaveDialog(selectImageButton.getScene().getWindow());
+        generateFile(file);
+    }
+    
+    void setSaveFilter(){
+    	 FileChooser.ExtensionFilter extFilterTXT = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.TXT");
+         chooser.getExtensionFilters().setAll(extFilterTXT);
+    }
+    
+    void generateFile(File file){
+    	String newLine = System.lineSeparator();
+		try {
+			writer = new FileWriter(file);
+			writer.write(
+					planet.getPlanetName() + newLine +
+					planet.getPlanetDiameterKM() + newLine +
+					planet.getPlanetMeanSurfaceTempC() + newLine +
+					planet.getPlanetNumberOfMoons()
+			);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
     }
 
 }
