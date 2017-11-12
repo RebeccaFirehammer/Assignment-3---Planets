@@ -1,7 +1,10 @@
 package planet.detail;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -22,7 +25,13 @@ public class PlanetController {
     
     private FileWriter writer;
     
+    private FileReader reader;
+    
+    private BufferedReader buffer;
+    
     private Planet planet;
+    
+    private Planet loadPlanet;
     
 	private final double MILES_IN_KM = 0.621371;
 
@@ -93,12 +102,28 @@ public class PlanetController {
     	return ((planetMeanSurfaceTempC * 9) / 5 + 32);
     }
     
-    void setPlanetValues(){
+    void setPlanetValuesFromWindow(){
     	planetNameValue = planetName.getText();
     	planetDiameterKMValue = Double.parseDouble(planetDiameterKM.getText());
     	planetMeanSurfaceTempCValue = Double.parseDouble(planetMeanSurfaceTempC.getText());
     	planetNumberOfMoonsValue = Integer.parseInt(planetNumberOfMoons.getText());
     	planet = new Planet(planetNameValue, planetDiameterKMValue, planetMeanSurfaceTempCValue, planetNumberOfMoonsValue);
+    }
+    
+    void setPlanetValuesFromFile(String name, String diameter, String temp, String moons){
+//    	planetNameValue = name;
+//    	planetDiameterKMValue = Double.parseDouble(diameter);
+//    	planetMeanSurfaceTempCValue = Double.parseDouble(temp);
+//    	planetNumberOfMoonsValue = Integer.parseInt(moons);
+//    	loadPlanet = new Planet(planetNameValue, planetDiameterKMValue, planetMeanSurfaceTempCValue, planetNumberOfMoonsValue);	 	
+//    
+    }
+    
+    void loadTextFields(){
+    	//planetName.setText();
+    	//planetDiameterKM.setText();
+    	//planetMeanSurfaceTempC.setText();
+    	//planetNumberOfMoons.setText();
     }
     
     @FXML
@@ -123,20 +148,47 @@ public class PlanetController {
     
     @FXML    
     void loadPlanet(ActionEvent event) {   
+    	setTextFilter();
         chooser.setTitle("Select Planet to Load");
-        chooser.showOpenDialog(selectImageButton.getScene().getWindow());
+        File file = chooser.showOpenDialog(selectImageButton.getScene().getWindow());
+        loadFile(file);
+    }
+    
+    void loadFile(File file){
+    	int numberOfLines = 4;
+    	String[] planetData = new String[numberOfLines];
+    	try {
+			reader = new FileReader(file);
+			buffer = new BufferedReader(reader);
+			
+			for (int i = 0; i < numberOfLines-1; i++){
+				planetData[i] = buffer.readLine();
+			}
+			
+			/******************Left off here*****************/
+			setPlanetValuesFromFile(planetData[0], planetData[1], planetData[2], planetData[3]);
+			loadTextFields();
+			/******************Left off here*****************/
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
     }
 
     @FXML    
     void savePlanet(ActionEvent event) {   
-    	setPlanetValues();
-    	setSaveFilter(); 
+    	setPlanetValuesFromWindow();
+    	setTextFilter(); 
         chooser.setTitle("Select Location to Save Planet");
         File file = chooser.showSaveDialog(selectImageButton.getScene().getWindow());
         generateFile(file);
     }
     
-    void setSaveFilter(){
+    void setTextFilter(){
     	 FileChooser.ExtensionFilter extFilterTXT = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.TXT");
          chooser.getExtensionFilters().setAll(extFilterTXT);
     }
