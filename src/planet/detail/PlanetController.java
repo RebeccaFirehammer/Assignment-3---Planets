@@ -18,11 +18,11 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 public class PlanetController {
-    FileChooser chooser = new FileChooser();
+    private FileChooser chooser = new FileChooser();
     
-    FileWriter writer;
+    private FileWriter writer;
     
-    Planet planet;
+    private Planet planet;
     
 	private final double MILES_IN_KM = 0.621371;
 
@@ -155,7 +155,6 @@ public class PlanetController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
     }
 
 }
