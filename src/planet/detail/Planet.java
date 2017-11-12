@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
 public class Planet {
 	
 	private final String VALID_CHARS = "^[A-Za-z0-9 -.]+$";
-	private final double MILES_IN_KM = 0.621371;
 	private final int MIN_NAME_LENGTH = 1;
 	private final int MAX_NAME_LENGTH = 255;
 	private final double MIN_DIAMETER = 0;
@@ -37,14 +36,6 @@ public class Planet {
     	this.planetNumberOfMoons = planetNumberOfMoons;
     	this.planetImage = planetImage;
     	
-    }
-    
-    public double calculatePlanetDiameterM(double planetDiameterKM) {
-    	return (planetDiameterKM * MILES_IN_KM);
-    }
-    
-    public double calculatePlanetMeanSurfaceTempF(double planetMeanSurfaceTempC) {
-    	return ((planetMeanSurfaceTempC * 9) / 5 + 32);
     }
     
     public boolean isValidName(String planetName) {
@@ -81,14 +72,12 @@ public class Planet {
     public void setPlanetDiameterKM(double planetDiameterKM) {
     	if(isValidDiameter(planetDiameterKM)) {
     		this.planetDiameterKM = planetDiameterKM;
-    		calculatePlanetDiameterM(planetDiameterKM); //may have to move this call
     	}
     }
     
     public void setPlanetMeanSurfaceTempC(double planetMeanSurfaceTempC) {
     	if(isValidTemp(planetMeanSurfaceTempC)) {
     		this.planetMeanSurfaceTempC = planetMeanSurfaceTempC;
-    		calculatePlanetMeanSurfaceTempF(planetMeanSurfaceTempC); //may have to move this call
     	}
     }
     

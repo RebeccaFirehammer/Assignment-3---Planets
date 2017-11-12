@@ -1,12 +1,19 @@
 package planet.detail;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
+
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
@@ -14,6 +21,8 @@ public class PlanetController {
     FileChooser chooser = new FileChooser();
     
     Planet planet;
+    
+	private final double MILES_IN_KM = 0.621371;
 
     @FXML
     private ImageView planetImage;
@@ -33,8 +42,6 @@ public class PlanetController {
 
     @FXML
     private TextField planetDiameterM;
-    
-    private Double planetDiameterMValue;
 
     @FXML
     private TextField planetMeanSurfaceTempC;
@@ -43,8 +50,6 @@ public class PlanetController {
 
     @FXML
     private TextField planetMeanSurfaceTempF;
-    
-    private Double planetMeanSurfaceTempFValue;
 
     @FXML
     private TextField planetNumberOfMoons;
@@ -54,6 +59,38 @@ public class PlanetController {
     @FXML
     private Label fancyPlanetName;
     
+    public void initialize(){
+    	addTextFieldListeners();
+    }
+    
+    void addTextFieldListeners(){
+    	planetName.textProperty().addListener((obs, oldText, newText) -> {
+    	    fancyPlanetName.setText(newText);
+    	});
+    	planetMeanSurfaceTempC.textProperty().addListener((obs, oldText, newText) -> {
+    		try{
+    			planetMeanSurfaceTempF.setText(Double.toString(calculatePlanetMeanSurfaceTempF(Double.parseDouble(newText))));
+    		} catch (NumberFormatException e){
+    			System.err.println("Invalid Temperature value.");
+    		}
+    	});
+    	planetDiameterKM.textProperty().addListener((obs, oldText, newText) -> {
+    		try {
+    			planetDiameterM.setText(Double.toString(calculatePlanetDiameterM(Double.parseDouble(newText))));
+    		} catch (NumberFormatException e){
+    			System.err.println("Invalid Diameter value.");
+    		}
+    	});
+    }
+    
+    public double calculatePlanetDiameterM(double planetDiameterKM) {
+    	return (planetDiameterKM * MILES_IN_KM);
+    }
+    
+    public double calculatePlanetMeanSurfaceTempF(double planetMeanSurfaceTempC) {
+    	return ((planetMeanSurfaceTempC * 9) / 5 + 32);
+    }
+    
     void setPlanetValues(){
     	planetNameValue = planetName.getText();
     	planetDiameterKMValue = Double.parseDouble(planetDiameterKM.getText());
@@ -62,17 +99,24 @@ public class PlanetController {
     	planet = new Planet(planetNameValue, planetDiameterKMValue, planetMeanSurfaceTempCValue, planetNumberOfMoonsValue);
     }
     
-    void generateConversionTextFields(){
-    	planetDiameterMValue = planet.calculatePlanetDiameterM(planetDiameterKMValue);
-    	planetDiameterM.setText(Double.toString(planetDiameterMValue));
-    	
-    	planetMeanSurfaceTempFValue = planet.calculatePlanetMeanSurfaceTempF(planetMeanSurfaceTempCValue);
-    	planetMeanSurfaceTempF.setText(Double.toString(planetMeanSurfaceTempFValue));
-    }
     @FXML
     void selectImage(ActionEvent event) {
+        setImageFilter();
         chooser.setTitle("Select Image");
-        chooser.showOpenDialog(selectImageButton.getScene().getWindow());
+        File file = chooser.showOpenDialog(selectImageButton.getScene().getWindow());
+        try {
+            BufferedImage bufferedImage = ImageIO.read(file);
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            planetImage.setImage(image);
+        } catch (IOException ex) {
+        	System.err.println("Invalid Image.");
+        }
+    }
+    
+    void setImageFilter(){
+        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+        chooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
     }
     
     @FXML    
@@ -84,7 +128,6 @@ public class PlanetController {
     @FXML    
     void savePlanet(ActionEvent event) {   
     	setPlanetValues();
-    	generateConversionTextFields();
         chooser.setTitle("Select Location to Save Planet");
         chooser.showSaveDialog(selectImageButton.getScene().getWindow());
     }
