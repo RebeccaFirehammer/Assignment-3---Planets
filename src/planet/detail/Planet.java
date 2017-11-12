@@ -21,6 +21,14 @@ public class Planet {
     private double planetMeanSurfaceTempC;
     private int planetNumberOfMoons;
     
+    
+    public Planet(String planetName, double planetDiameterKM, double planetMeanSurfaceTempC,
+			int planetNumberOfMoons) {
+    	this.planetName = planetName;
+    	this.planetDiameterKM = planetDiameterKM;
+    	this.planetMeanSurfaceTempC = planetMeanSurfaceTempC;
+    	this.planetNumberOfMoons = planetNumberOfMoons;
+    }
     public Planet(String planetName, double planetDiameterKM, double planetMeanSurfaceTempC,
     				int planetNumberOfMoons, Image planetImage) {
     	this.planetName = planetName;
