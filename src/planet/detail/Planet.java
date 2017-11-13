@@ -1,7 +1,5 @@
 package planet.detail;
 
-import javafx.scene.image.Image;
-
 public class Planet {
 	
 	private final String VALID_CHARS = "^[A-Za-z0-9 -.]+$";
@@ -15,7 +13,7 @@ public class Planet {
 	private final int MAX_MOONS = 1000;
 	
     private String planetName;
-	private Image planetImage;
+	private String planetImagePath;
     private double planetDiameterKM;
     private double planetMeanSurfaceTempC;
     private int planetNumberOfMoons;
@@ -29,13 +27,12 @@ public class Planet {
     	this.planetNumberOfMoons = planetNumberOfMoons;
     }
     public Planet(String planetName, double planetDiameterKM, double planetMeanSurfaceTempC,
-    				int planetNumberOfMoons, Image planetImage) {
+    				int planetNumberOfMoons, String planetImagePath) {
     	this.planetName = planetName;
     	this.planetDiameterKM = planetDiameterKM;
     	this.planetMeanSurfaceTempC = planetMeanSurfaceTempC;
     	this.planetNumberOfMoons = planetNumberOfMoons;
-    	this.planetImage = planetImage;
-    	
+    	this.planetImagePath = planetImagePath;
     }
     
     public boolean isValidName(String planetName) {
@@ -65,8 +62,8 @@ public class Planet {
     	}
     }
     
-    public void setPlanetImage(Image planetImage){
-    	this.planetImage = planetImage;
+    public void setPlanetImagePath(String planetImagePath){
+    	this.planetImagePath = planetImagePath;
     }
     
     public void setPlanetDiameterKM(double planetDiameterKM) {
@@ -91,8 +88,8 @@ public class Planet {
 		return planetName;
 	}
     
-    public Image getPlanetImage(){
-    	return planetImage;
+    public String getPlanetImagePath(){
+    	return planetImagePath;
     }
 
 	public double getPlanetDiameterKM() {

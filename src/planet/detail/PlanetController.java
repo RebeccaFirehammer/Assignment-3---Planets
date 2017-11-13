@@ -21,6 +21,9 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 public class PlanetController {
+	
+	private Planet planet; 
+	
     private FileChooser chooser = new FileChooser();
     
     private FileWriter writer;
@@ -29,14 +32,19 @@ public class PlanetController {
     
     private BufferedReader buffer;
     
-    private Planet planet;
-    
-    
 	private final double MILES_IN_KM = 0.621371;
 
     @FXML
     private ImageView planetImage;
-
+    
+    private Image loadImage;
+    
+    private String planetImagePathValue;
+    
+    private Image defaultImage;
+    
+    private String defaultImagePathValue = "/images/no_image.png";
+    
     @FXML
     private Button selectImageButton; 
 
@@ -71,6 +79,8 @@ public class PlanetController {
     
     public void initialize(){
     	addTextFieldListeners();
+    	defaultImage = new Image(defaultImagePathValue);
+    	planetImage.setImage(defaultImage);
     }
     
     void addTextFieldListeners(){
@@ -106,21 +116,25 @@ public class PlanetController {
     	planetDiameterKMValue = Double.parseDouble(planetDiameterKM.getText());
     	planetMeanSurfaceTempCValue = Double.parseDouble(planetMeanSurfaceTempC.getText());
     	planetNumberOfMoonsValue = Integer.parseInt(planetNumberOfMoons.getText());
-    	planet = new Planet(planetNameValue, planetDiameterKMValue, planetMeanSurfaceTempCValue, planetNumberOfMoonsValue);
+    	planet = new Planet(planetNameValue, planetDiameterKMValue, planetMeanSurfaceTempCValue, planetNumberOfMoonsValue, planetImagePathValue);
     }
     
-    void setPlanetValuesFromFile(String name, String diameter, String temp, String moons){
+    void setPlanetValuesFromFile(String name, String diameter, String temp, String moons, String path){
     	planetNameValue = name;
     	planetDiameterKMValue = Double.parseDouble(diameter);
     	planetMeanSurfaceTempCValue = Double.parseDouble(temp);
     	planetNumberOfMoonsValue = Integer.parseInt(moons);
+    	planetImagePathValue = path;
+    	System.out.println("Load image from file: " + path);
+//    	loadImage = new Image(planetImagePathValue);
+//    	planetImage.setImage(loadImage);
     }
     
-    void loadTextFields(){
+    void loadFields(){
     	planetName.setText(planetNameValue);
     	planetDiameterKM.setText(planetDiameterKMValue.toString());
     	planetMeanSurfaceTempC.setText(planetMeanSurfaceTempCValue.toString());
-    	planetNumberOfMoons.setText(String.valueOf(planetNumberOfMoonsValue));
+    	planetNumberOfMoons.setText(String.valueOf(planetNumberOfMoonsValue));	
     }
     
     @FXML
@@ -131,6 +145,7 @@ public class PlanetController {
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            planetImagePathValue = file.getPath();
             planetImage.setImage(image);
         } catch (IOException ex) {
         	System.err.println("Invalid Image.");
@@ -148,11 +163,13 @@ public class PlanetController {
     	setTextFilter();
         chooser.setTitle("Select Planet to Load");
         File file = chooser.showOpenDialog(selectImageButton.getScene().getWindow());
-        loadFile(file);
+        if(file != null){
+        	loadFile(file);
+        }
     }
     
     void loadFile(File file){
-    	int numberOfLines = 4;
+    	int numberOfLines = 5;
     	String[] planetData = new String[numberOfLines];
     	try {
 			reader = new FileReader(file);
@@ -161,15 +178,12 @@ public class PlanetController {
 			for (int i = 0; i < numberOfLines; i++){
 				planetData[i] = buffer.readLine();
 			}
-			
-			setPlanetValuesFromFile(planetData[0], planetData[1], planetData[2], planetData[3]);
-			loadTextFields();
+			setPlanetValuesFromFile(planetData[0], planetData[1], planetData[2], planetData[3], planetData[4]);
+			loadFields();
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
     }
@@ -196,7 +210,8 @@ public class PlanetController {
 					planet.getPlanetName() + newLine +
 					planet.getPlanetDiameterKM() + newLine +
 					planet.getPlanetMeanSurfaceTempC() + newLine +
-					planet.getPlanetNumberOfMoons()
+					planet.getPlanetNumberOfMoons() + newLine +
+					planet.getPlanetImagePath()
 			);
 			writer.close();
 		} catch (IOException e) {
