@@ -111,19 +111,19 @@ public class PlanetController {
     }
     
     void setPlanetValuesFromFile(String name, String diameter, String temp, String moons){
-//    	planetNameValue = name;
-//    	planetDiameterKMValue = Double.parseDouble(diameter);
-//    	planetMeanSurfaceTempCValue = Double.parseDouble(temp);
-//    	planetNumberOfMoonsValue = Integer.parseInt(moons);
-//    	loadPlanet = new Planet(planetNameValue, planetDiameterKMValue, planetMeanSurfaceTempCValue, planetNumberOfMoonsValue);	 	
-//    
+    	planetNameValue = name;
+    	planetDiameterKMValue = Double.parseDouble(diameter);
+    	planetMeanSurfaceTempCValue = Double.parseDouble(temp);
+    	planetNumberOfMoonsValue = Integer.parseInt(moons);
+    	//loadPlanet = new Planet(planetNameValue, planetDiameterKMValue, planetMeanSurfaceTempCValue, planetNumberOfMoonsValue);	 	
+
     }
     
     void loadTextFields(){
-    	//planetName.setText();
-    	//planetDiameterKM.setText();
-    	//planetMeanSurfaceTempC.setText();
-    	//planetNumberOfMoons.setText();
+    	planetName.setText(planetNameValue);
+    	planetDiameterKM.setText(planetDiameterKMValue.toString());
+    	planetMeanSurfaceTempC.setText(planetMeanSurfaceTempCValue.toString());
+    	planetNumberOfMoons.setText(String.valueOf(planetNumberOfMoonsValue));
     }
     
     @FXML
@@ -161,7 +161,7 @@ public class PlanetController {
 			reader = new FileReader(file);
 			buffer = new BufferedReader(reader);
 			
-			for (int i = 0; i < numberOfLines-1; i++){
+			for (int i = 0; i < numberOfLines; i++){
 				planetData[i] = buffer.readLine();
 			}
 			
