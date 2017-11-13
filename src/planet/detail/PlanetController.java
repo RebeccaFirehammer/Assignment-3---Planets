@@ -125,9 +125,22 @@ public class PlanetController {
     	planetMeanSurfaceTempCValue = Double.parseDouble(temp);
     	planetNumberOfMoonsValue = Integer.parseInt(moons);
     	planetImagePathValue = path;
-    	System.out.println("Load image from file: " + path);
-//    	loadImage = new Image(planetImagePathValue);
-//    	planetImage.setImage(loadImage);
+    	
+    	if(planetImagePathValue == null){
+    		loadImage(defaultImagePathValue);
+    	} else{
+    		loadImage(planetImagePathValue);
+    	}
+    }
+    
+    void loadImage(String path){
+    	try {
+			BufferedImage img = ImageIO.read(new File(path));
+			Image image = SwingFXUtils.toFXImage(img, null);
+			planetImage.setImage(image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
     
     void loadFields(){
