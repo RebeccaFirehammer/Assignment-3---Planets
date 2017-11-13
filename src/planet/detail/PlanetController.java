@@ -31,7 +31,6 @@ public class PlanetController {
     
     private Planet planet;
     
-    private Planet loadPlanet;
     
 	private final double MILES_IN_KM = 0.621371;
 
@@ -115,8 +114,6 @@ public class PlanetController {
     	planetDiameterKMValue = Double.parseDouble(diameter);
     	planetMeanSurfaceTempCValue = Double.parseDouble(temp);
     	planetNumberOfMoonsValue = Integer.parseInt(moons);
-    	//loadPlanet = new Planet(planetNameValue, planetDiameterKMValue, planetMeanSurfaceTempCValue, planetNumberOfMoonsValue);	 	
-
     }
     
     void loadTextFields(){
@@ -165,10 +162,8 @@ public class PlanetController {
 				planetData[i] = buffer.readLine();
 			}
 			
-			/******************Left off here*****************/
 			setPlanetValuesFromFile(planetData[0], planetData[1], planetData[2], planetData[3]);
 			loadTextFields();
-			/******************Left off here*****************/
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
