@@ -24,9 +24,9 @@ public class PlanetController {
 	
 	private Planet planet; 
 	
+	private PlanetBuilder builder = new PlanetBuilder();
+	
     private FileChooser chooser = new FileChooser();
-    
-    private FileWriter writer;
     
     private FileReader reader;
     
@@ -124,9 +124,8 @@ public class PlanetController {
     	planetDiameterKMValue = Double.parseDouble(diameter);
     	planetMeanSurfaceTempCValue = Double.parseDouble(temp);
     	planetNumberOfMoonsValue = Integer.parseInt(moons);
-    	planetImagePathValue = path;
-    	
-    	if(planetImagePathValue == null){
+    	if (path != null){
+    		planetImagePathValue = path;
     		loadImage(defaultImagePathValue);
     	} else{
     		loadImage(planetImagePathValue);
@@ -189,7 +188,7 @@ public class PlanetController {
 			buffer = new BufferedReader(reader);
 			
 			for (int i = 0; i < numberOfLines; i++){
-				planetData[i] = buffer.readLine();
+					planetData[i] = buffer.readLine();
 			}
 			setPlanetValuesFromFile(planetData[0], planetData[1], planetData[2], planetData[3], planetData[4]);
 			loadFields();
@@ -207,7 +206,7 @@ public class PlanetController {
     	setTextFilter(); 
         chooser.setTitle("Select Location to Save Planet");
         File file = chooser.showSaveDialog(selectImageButton.getScene().getWindow());
-        generateFile(file);
+        builder.generateFile(file, planet);
     }
     
     void setTextFilter(){
@@ -215,21 +214,6 @@ public class PlanetController {
          chooser.getExtensionFilters().setAll(extFilterTXT);
     }
     
-    void generateFile(File file){
-    	String newLine = System.lineSeparator();
-		try {
-			writer = new FileWriter(file);
-			writer.write(
-					planet.getPlanetName() + newLine +
-					planet.getPlanetDiameterKM() + newLine +
-					planet.getPlanetMeanSurfaceTempC() + newLine +
-					planet.getPlanetNumberOfMoons() + newLine +
-					planet.getPlanetImagePath()
-			);
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    }
+    
 
 }
